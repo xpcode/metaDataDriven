@@ -1,0 +1,163 @@
+<html>
+
+<head>
+  <title></title>
+  <link href="http://cdn.bootcss.com/element-ui/1.2.1/theme-default/index.css" rel="stylesheet">
+  <script src="http://cdn.bootcss.com/EventEmitter/5.1.0/EventEmitter.js"></script>
+  <script src="http://cdn.bootcss.com/vue/2.2.1/vue.js"></script>
+  <script src="http://cdn.bootcss.com/vue-resource/1.2.0/vue-resource.js"></script>
+  <script src="http://cdn.bootcss.com/element-ui/1.2.1/index.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <yy-metaview-query :metadata="metaData" :bizdata="bizData" />
+  </div>
+
+  <template id="template-metaview-query">
+    <el-row>
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item>首页</el-breadcrumb-item>
+        <el-breadcrumb-item>{{ title }}</el-breadcrumb-item>
+      </el-breadcrumb>
+      <el-form ref="form" label-width="80px">
+        <el-form-item :label="item.label" :key="item.name" v-for="item in metaFormItems">
+          <el-input :id="item.name" v-model="bizFormItems[item.name]"></el-input>
+        </el-form-item>
+      </el-form>
+      <el-table :data="bizTableData" style="width: 100%">
+        <el-table-column :prop="item.name" :label="item.label" :key="item.name" v-for="item in metaTableData">
+        </el-table-column>
+      </el-table>
+    </el-row>
+  </template>
+
+  <script>
+    Vue.component('yy-metaview-query', {
+      template: '#template-metaview-query',
+      props: {
+        metadata: {
+          required: true,
+          default: {
+            billitem: [],
+            billtemplet: {
+              title: null
+            }
+          }
+        },
+        bizdata: {
+          required: true,
+          default: {
+            head: null,
+            body: null
+          }
+        }
+      },
+      computed: {
+        metaFormItems: function () {
+          if (!this.metadata) {
+            return {}
+          }
+          return this.metadata.billitem.filter(function (item) {
+            return item.pos === 'head'
+          })
+        },
+        metaTableData: function () {
+          if (!this.metadata) {
+            return []
+          }
+          return this.metadata.billitem.filter(function (item) {
+            return item.pos === 'body'
+          })
+        },
+        bizFormItems: function () {
+          if (!this.bizdata)
+            return []
+          return this.bizdata.head
+        },
+        bizTableData: function () {
+          if (!this.bizdata)
+            return []
+          return this.bizdata.body
+        },
+        title: function () {
+          if (!this.metadata)
+            return ''
+          return this.metadata.billtemplet.title
+        }
+      }
+    })
+  </script>
+
+  <script>
+    class QueryModel extends EventEmitter {
+      init() {
+        console.log(`请实现接口init`)
+      }
+    }
+
+    var instanceQM = new QueryModel()
+
+    instanceQM.on('init', function (context) {
+      // 业务开发coding  ---- start
+      context.$http.get('/api/products').then(response => {
+        const result = response.body
+
+        if (result.code === 200) {
+          // this.bizData = result.data[0]
+          context.render(result.data[0])
+        } else {
+          console.error('api is error.')
+        }
+      })
+      // 业务开发coding  ---- end
+    })
+    instanceQM.on('query', function () {
+      // 业务开发coding  ---- start
+      this.get('/api/products').then(response => {
+        const result = response.body
+
+        if (result.code === 200) {
+          this.bizData = result.data[0]
+        } else {
+          console.error('api is error.')
+        }
+      })
+      // 业务开发coding  ---- end
+    })
+
+    new Vue({
+      el: '#app',
+      data: {
+        metaData: null,
+        bizData: null
+      },
+      created: function () {
+        this.$http.get('/api/metadata/product').then(response => {
+          const result = response.body
+
+          if (result.code === 200) {
+            this.metaData = result.data
+            this.initBizData()
+          } else {
+            console.error('api is error.')
+          }
+        })
+      },
+      methods: {
+        initBizData: function () {
+          var that = this
+          var context = {
+            $http: this.$http,
+            render: function (bizData) {
+              that.bizData = bizData
+            }
+          }
+          instanceQM.emit('init', context)
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
