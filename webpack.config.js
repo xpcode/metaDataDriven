@@ -5,7 +5,7 @@ var config = {
   entry: [
     'webpack-hot-middleware/client?reload=true',
     'webpack/hot/only-dev-server',
-    './pages/Home'
+    './client.js'
   ],
   output: {
     path: path.join(__dirname, './'),
