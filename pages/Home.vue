@@ -7,7 +7,7 @@
 
   const impl = {
     init(context) {
-      context.$http.get('/api/products').then(function (response) {
+      context.$http.get('/api/products').then(response => {
         const result = response.body
 
         if (result.code === 200) {

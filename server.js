@@ -16,6 +16,9 @@ app.get('/', function (req, res) {
   res.render('index')
 });
 
+/**
+ * 获取元数据，直接在元数据文件夹读取
+ */
 app.get('/api/metadata/:moduleId', function (req, res) {
   const moduleId = req.param('moduleId')
   const metadata = require(`./__mock__/metadata-ui/${moduleId}`)
@@ -26,6 +29,9 @@ app.get('/api/metadata/:moduleId', function (req, res) {
   }))
 })
 
+/**
+ * 获取业务数据
+ */
 app.get('/api/products', function (req, res) {
   const data = require('./__mock__/data/products')
 
@@ -46,7 +52,6 @@ app.use(require('webpack-dev-middleware')(compiler, {
     chunks: false
   },
   hot: true,
-  lazy: true,
   host: '0.0.0.0'
 }))
 

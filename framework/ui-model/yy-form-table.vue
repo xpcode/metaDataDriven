@@ -36,22 +36,22 @@
     },
 
     computed: {
-      formItems: function () {
-        return this.metadata.filter(function (item) {
+      formItems() {
+        return this.metadata.filter(item => {
           return item.ctltype.startsWith('yy-formitem-')
         })
       },
 
-      tableItems: function () {
-        return this.metadata.filter(function (item) {
+      tableItems() {
+        return this.metadata.filter(item => {
           return item.ctltype.startsWith('yy-tableitem-')
         })
       },
     },
 
-    created: function () {
+    created() {
       this.$http.get(env.HTTP_METADATA_BYMODULE + 'product')
-        .then(function (response) {
+        .then(response => {
           const result = response.body
 
           if (result.code === 200) {
@@ -64,7 +64,7 @@
     },
 
     methods: {
-      initBizData: function () {
+      initBizData() {
         this.$emit('init', {
           $http: this.$http,
           render: a => this.bizdata = a
