@@ -1,5 +1,5 @@
 <template>
-  <yy-form-table v-on:init="init"></yy-form-table>
+  <yy-form-table v-on:init="init" @clickbtnAdd="clickbtnAdd" @clickbtnSearch="clickbtnSearch"></yy-form-table>
 </template>
 
 <script>
@@ -16,6 +16,15 @@
           console.error('api is error.')
         }
       })
+    },
+
+    clickbtnAdd(context) {
+      alert('click btnAdd')
+    },
+
+    clickbtnSearch(context) {
+      alert('click btnSearch')
+      context.render([])
     }
   }
 

@@ -56,6 +56,18 @@ module.exports = {
       id: 'number',
       title: '数量',
       ctltype: 'yy-tableitem-number'
+    },
+    {
+      id: 'btnAdd',
+      title: '添加',
+      ctltype: 'yy-actionitem-button',
+      type: 'success'
+    },
+    {
+      id: 'btnSearch',
+      title: '查询',
+      ctltype: 'yy-actionitem-button',
+      type: 'info'
     }
   ]
 }

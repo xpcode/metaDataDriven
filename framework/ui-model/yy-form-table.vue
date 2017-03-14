@@ -11,8 +11,7 @@
         </el-col>
       </el-row>
       <el-form-item>
-        <el-button type="primary">新增</el-button>
-        <el-button>查询</el-button>
+        <el-button :id="item.id" :type="item.type" :key="item.id" @click="handleClick(item.id)" v-for="item in actionItems">{{item.title}}</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="bizdata" style="width: 100%">
@@ -47,6 +46,12 @@
           return item.ctltype.startsWith('yy-tableitem-')
         })
       },
+
+      actionItems() {
+        return this.metadata.filter(item => {
+          return item.ctltype.startsWith('yy-actionitem-')
+        })
+      },
     },
 
     created() {
@@ -66,6 +71,13 @@
     methods: {
       initBizData() {
         this.$emit('init', {
+          $http: this.$http,
+          render: a => this.bizdata = a
+        })
+      },
+
+      handleClick(ctlName) {
+        this.$emit(`click${ctlName}`, {
           $http: this.$http,
           render: a => this.bizdata = a
         })
