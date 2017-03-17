@@ -12,6 +12,7 @@ Vue.use(VueResource)
 Vue.use(VueRouter)
 Vue.use(ElementUI)
 
+Vue.component('yy-form', require('./ui-model/yy-form.vue'))
 Vue.component('yy-form-table', require('./ui-model/yy-form-table.vue'))
 Vue.component('yy-formitem-input', require('./ui-component/yy-formitem-input.vue'))
 Vue.component('yy-formitem-datetime', require('./ui-component/yy-formitem-datetime.vue'))

@@ -1,5 +1,5 @@
 <template>
-  <yy-form-table v-on:init="init" @clickbtnAdd="clickbtnAdd" @clickbtnSearch="clickbtnSearch"></yy-form-table>
+  <yy-form on:init="init" @clickbtnAdd="clickbtnAdd" @clickbtnSearch="clickbtnSearch"></yy-form>
 </template>
 
 <script>
@@ -19,8 +19,7 @@
     },
 
     clickbtnAdd(context) {
-      context.$router.push('/add')
-      // location.href = 'add'
+      alert('click btnAdd')
     },
 
     clickbtnSearch(context) {

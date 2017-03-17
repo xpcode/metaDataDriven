@@ -1,24 +1,15 @@
 <template>
   <el-row>
     <el-form ref="form" label-width="80px">
-      <el-row :gutter="20">
-        <el-col :span="8" v-for="item in formItems" :key="item.id">
-          <el-form-item :label="item.title">
-            <el-input v-if="item.ctltype==='yy-formitem-input'" :id="item.id" />
-            <el-input-number v-if="item.ctltype==='yy-formitem-number'" :min="1" :max="10" :id="item.id" />
-            <el-date-picker v-if="item.ctltype==='yy-formitem-date'" :id="item.id" type="date" placeholder="选择日期" />
-          </el-form-item>
-        </el-col>
-      </el-row>
+      <el-form-item :label="item.title" v-for="item in formItems">
+        <el-input v-if="item.ctltype==='yy-formitem-input'" :id="item.id" />
+        <el-input-number v-if="item.ctltype==='yy-formitem-number'" :min="1" :max="10" :id="item.id" />
+        <el-date-picker v-model="bizdata" v-if="item.ctltype==='yy-formitem-date'" :id="item.id" type="date" placeholder="选择日期" />
+      </el-form-item>
       <el-form-item>
         <el-button :id="item.id" :type="item.type" :key="item.id" @click="handleClick(item.id)" v-for="item in actionItems">{{item.title}}</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="bizdata" style="width: 100%">
-      <el-table-column :prop="item.id" :label="item.title" :key="item.id" v-for="item in tableItems">
-        <el-input :id="item.id" v-if="status===1" />
-      </el-table-column>
-    </el-table>
   </el-row>
 </template>
 
@@ -30,7 +21,7 @@
       return {
         status: 0,
         metadata: [],
-        bizdata: []
+        bizdata: {}
       }
     },
 
@@ -78,7 +69,6 @@
 
       handleClick(ctlName) {
         this.$emit(`click${ctlName}`, {
-          $router: this.$router,
           $http: this.$http,
           render: a => this.bizdata = a
         })

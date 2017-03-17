@@ -16,6 +16,10 @@ app.get('/', function (req, res) {
   res.render('index')
 });
 
+app.get('/add', function (req, res) {
+  res.render('index')
+});
+
 /**
  * 获取元数据，直接在元数据文件夹读取
  */
